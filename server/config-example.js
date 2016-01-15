@@ -1,3 +1,26 @@
+// adding CF env pickup of credentials from VCAP_SERVICES if running on bluemix...
+
+if(process.env.VCAP_SERVICES){
+	console.log("using VCAP_SERVICES");
+	var vcap = JSON.parse(process.env.VCAP_SERVICES);
+	console.log("using VCAP_SERVICES",vcap);
+	creds = vcap['cloudantNoSQLDB Dedicated'][0]['credentials'];
+	console.log("here are the creds", creds);
+	var config = {
+  couch_db_server: creds.host,
+  couch_db_port: creds.port,
+  couch_db_use_ssl: true,
+  couch_db_changes_since: 'now',
+  couch_admin_user: creds.username,
+  couch_admin_password: creds.password,
+  google_client_id: 'FOR GOOGLE SSO; GOOGLE CLIENT ID GOES HERE',
+  google_client_secret: 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',
+  server_port: 'process.env.VCAP_APP_PORT',
+  server: 'process.env.VCAP_APP_HOST',
+  use_ssl: false
+}
+
+
 var config = {
   couch_db_server: 'localhost',
   couch_db_port: '5984',
