@@ -1,3 +1,4 @@
+var crypto = require('crypto');
 var bodyParser = require('body-parser'),
     config =  require('../config.js'),
     nano = require('nano')(config.couch_auth_db_url),
@@ -105,6 +106,12 @@ function update_user(user, userData, updateParams, res) {
       }
     });
   }
+}
+function generatePasswordHash(password){
+  var salt = crypto.randomBytes(16).toString('hex');
+  var hash = crypto.createHash('sha1');
+  hash.update(password + salt);
+  return [hash.digest('hex'), salt];
 }
 
 module.exports = function(app) {

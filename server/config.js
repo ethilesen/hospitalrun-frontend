@@ -3,7 +3,7 @@
 if(process.env.VCAP_SERVICES){
 	console.log("using VCAP_SERVICES");
 	var vcap = JSON.parse(process.env.VCAP_SERVICES);
-	console.log("using VCAP_SERVICES",vcap);
+//	console.log("using VCAP_SERVICES",vcap);
 	creds = vcap['cloudantNoSQLDB Dedicated'][0]['credentials'];
 	console.log("here are the creds", creds);
 	var config = {
@@ -13,13 +13,13 @@ if(process.env.VCAP_SERVICES){
   couch_db_changes_since: 'now',
   couch_admin_user: creds.username,
   couch_admin_password: creds.password,
-  google_client_id: 'FOR GOOGLE SSO; GOOGLE CLIENT ID GOES HERE',
-  google_client_secret: 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',
+  google_client_id: creds.username || 'FOR GOOGLE SSO; GOOGLE CLIENT ID GOES HERE',
+  google_client_secret: creds.password || 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',
   server_port: 'process.env.VCAP_APP_PORT',
   server: 'process.env.VCAP_APP_HOST',
   use_ssl: false
 }
-
+}else{
 
 var config = {
   couch_db_server: 'localhost',
@@ -34,7 +34,7 @@ var config = {
   server: 'localhost',
   use_ssl: false
 };
-
+}
 config.couch_credentials = function() {
   if (config.couch_admin_user && config.couch_admin_password) {
     return config.couch_admin_user + ':' + config.couch_admin_password + '@';

@@ -1,0 +1,10 @@
+applications:
+- path: .
+  memory: 1250MB
+  instances: 1
+  domain: sr5.eu-gb.mybluemix.net
+  name: devhospitalrun
+  host: devhospitalrun
+  disk_quota: 1024M
+  service:
+    -

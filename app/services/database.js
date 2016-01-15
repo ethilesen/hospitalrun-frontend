@@ -27,6 +27,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
           Ember.isEmpty(configs.config_consumer_secret) ||
           Ember.isEmpty(configs.config_oauth_token) ||
           Ember.isEmpty(configs.config_token_secret)) {
+          
           throw Error('login required');
         }
         pouchOptions.ajax = {
