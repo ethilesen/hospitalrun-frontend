@@ -3,6 +3,12 @@ var bodyParser = require('body-parser'),
     nano = require('nano')(config.couch_auth_db_url),
     users = nano.use('_users');
 
+if (process.env.VCAP_SERVICES){ // check if running on Bluemix
+        bluemix = true;
+        console.log("running on bluemix");
+
+        }
+console.log("Using db on: ",config.couch_db_server);
 function delete_user(user, idToDelete, rev, res) {
   if (is_admin(user)) {
     users.destroy(idToDelete, rev, function(err, body) {
@@ -85,6 +91,12 @@ function is_admin(user) {
 
 function update_user(user, userData, updateParams, res) {
   if (is_admin(user)) {
+    if(bluemix){
+      console.log("hash/salt data for cloudant");
+      var hashAndSalt = generatePasswordHash(userData.password);
+      userData.password_sha = hashAndSalt[0];
+      userData.salt = hashAndSalt[1];
+    }
     users.insert(userData, updateParams, function(err, body) {
       if (err) {
         res.json({ error: true, errorResult: err });
