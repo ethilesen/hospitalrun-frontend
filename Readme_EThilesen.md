@@ -1,0 +1,3 @@
+The Idea here are to make this project easely deploy to Bluemix with Cloudant db.
+I will try to change as little as possible - but some issues with Cloudant vs couch needs a tweak...
+
